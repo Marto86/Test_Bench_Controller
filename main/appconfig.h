@@ -1,0 +1,32 @@
+#ifndef __APPCONFIG_H__
+#define __APPCONFIG_H__
+
+#define FIRMWARE_VERSION "1.0.0"
+
+#define COMMAND_RECEIVED_MSG "COMMAND RECEIVED"
+
+#define ECHO_TEST_TXD  (GPIO_NUM_4)
+#define ECHO_TEST_RXD  (GPIO_NUM_5)
+#define ECHO_TEST_RTS  (UART_PIN_NO_CHANGE)
+#define ECHO_TEST_CTS  (UART_PIN_NO_CHANGE)
+
+#define BUF_SIZE (2048)
+
+// #define RUN_TESTS
+#define BTN_FORCE_RESEND_DELAY_SECONDS (180)
+#define SEND_DATA_DIFF_INTERVAL_SECONDS (300)
+#define SEND_DATA_ALL_INTERVAL_SECONDS (6 * 60 * 60) // 6 hours
+
+#define LED_POWER (9)
+
+#define LED_COMMUNICATE (49)
+// Chamber relays 
+
+#define CHAMBER_RELAY_1 (0)
+#define CHAMBER_RELAY_2 (0)
+#define CHAMBER_RELAY_3 (0)
+#define CHAMBER_RELAY_4 (0)
+
+#define DATA_READ_RETRY_COUNT (3)
+
+#endif //__APPCONFIG_H__
