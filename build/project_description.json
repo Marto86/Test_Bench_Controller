@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "main",
-    "project_version":    "1",
+    "project_version":    "17c566f-dirty",
     "project_path":       "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.1.2",
     "build_dir":          "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/build",
@@ -790,7 +790,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/build/esp-idf/main/libmain.a",
-            "sources": [ "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/main/app_main.c" ],
+            "sources": [ "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/main/output_control.c", "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/main/app_main.c" ],
             "include_dirs": [ "." ]
         },
         "mbedtls": {
