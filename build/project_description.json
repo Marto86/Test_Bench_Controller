@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "main",
-    "project_version":    "17c566f-dirty",
+    "project_version":    "ade44a3-dirty",
     "project_path":       "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller",
     "idf_path":           "C:/Espressif/frameworks/esp-idf-v5.1.2",
     "build_dir":          "C:/Users/MPAVLOV2/Desktop/Test_Bench_Controller/build",

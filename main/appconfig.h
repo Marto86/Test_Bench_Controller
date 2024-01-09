@@ -12,7 +12,7 @@
 
 #define BUF_SIZE (2048)
 
-#define RELEAY_POWER_ON (35)
+
 #define LED_RELAY (49)
 // #define RUN_TESTS
 #define BTN_FORCE_RESEND_DELAY_SECONDS (180)
@@ -20,6 +20,18 @@
 #define SEND_DATA_ALL_INTERVAL_SECONDS (6 * 60 * 60) // 6 hours
 
 #define LED_POWER (9)
+
+#define RELEAY_POWER_ON (0)
+#define RELEAY_POWER_OFF (1)
+
+#define RELAY_1  (1)
+#define RELAY_2  (2)
+#define RELAY_3  (3)
+#define RELAY_4  (4)
+#define RELAY_5  (5)
+#define RELAY_6  (6)
+#define RELAY_7  (7)
+#define RELAY_8  (8)
 
 #define LED_COMMUNICATE (49)
 // Chamber relays

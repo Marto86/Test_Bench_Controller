@@ -27,6 +27,27 @@ static const char *TAG = "main";
 
 int num = 0;
 
+static void relays_gpio_init(void)
+{
+    gpio_set_direction(1, GPIO_MODE_OUTPUT);
+    gpio_set_direction(2, GPIO_MODE_OUTPUT);
+    gpio_set_direction(3, GPIO_MODE_OUTPUT);
+    gpio_set_direction(4, GPIO_MODE_OUTPUT);
+    gpio_set_direction(5, GPIO_MODE_OUTPUT);
+    gpio_set_direction(6, GPIO_MODE_OUTPUT);
+    gpio_set_direction(7, GPIO_MODE_OUTPUT);
+    gpio_set_direction(8, GPIO_MODE_OUTPUT);
+    vTaskDelay(pdMS_TO_TICKS(500));
+    gpio_set_level(RELAY_1, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_2, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_3, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_4, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_5, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_6, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_7, RELEAY_POWER_OFF);
+    gpio_set_level(RELAY_8, RELEAY_POWER_OFF);
+}
+
 static void ledc_init(void)
 {
     // Prepare and then apply the LEDC PWM timer configuration
@@ -62,7 +83,7 @@ static void ledc_init(void)
 
 void uart_read_task(void *pvParameters)
 {
-    uint8_t *data = (uint8_t *)malloc(BUF_SIZE);
+    uint32_t *data = (uint32_t *)malloc(BUF_SIZE);
 
     while (1)
     {
@@ -71,22 +92,27 @@ void uart_read_task(void *pvParameters)
         {
             data[len] = 0; // Null-terminate the received data
 
-            typedef union
-            {
-                char str[32];
-                int num;
-            } ExpectedData;
-
-            ExpectedData expected_data;
+            // typedef union
+            // {
+            //     char str[32];
+            //     int num;
+            // } ExpectedData;
 
             // You can assign either a string or an integer to expected_data
-            expected_data.num = 42; // Example integer
+            int recieved_data = atoi((const char *)data); // Example integer
             // strncpy(expected_data.str, "This_is_string_from_PROVEtech", sizeof(expected_data.str));
+            printf("Received the expected number: %d\n", recieved_data);
+            int relay_number = recieved_data / 10;
+            int relay_state = recieved_data % 10;
 
-            // Check if received data matches the expected data
+            gpio_set_level(relay_number, relay_state);
+
+           
+            // gpio_set_level(relay_number, RELEAY_POWER_OFF);
+            // // Check if received data matches the expected data
             // if (strncmp((const char *)data, expected_data.str, sizeof(expected_data.str)) == 0)
             // {
-            //     printf("Received the expected data!\n");
+            //     printf("Received data!\n");
 
             //     const char *data = "String from PROVEtech is recieved\n";
             //     uart_write_bytes(UART_NUM, data, strlen(data));
@@ -99,23 +125,24 @@ void uart_read_task(void *pvParameters)
             //     const char *data = "Data is incorrect !!!!!!!!!!!!!!\n";
             //     uart_write_bytes(UART_NUM, data, strlen(data));
             //     vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay for 1 second
-            // }
-            if (atoi((const char *)data) == expected_data.num)
-            {
-                printf("Received the expected number: %d\n", expected_data.num);
 
-                ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
-                // Update duty to apply the new value
-                vTaskDelay(1000 / portTICK_PERIOD_MS);
-                ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
-                ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
-                // Your logic here for the number case
-            }
-            else
-            {
-                ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 0));
-                ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
-            }
+            // if (atoi((const char *)data))
+            // {
+
+            //     // printf("Received the expected number: %d\n", expected_data.num);
+
+            //     ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
+            //     // Update duty to apply the new value
+            //     vTaskDelay(1000 / portTICK_PERIOD_MS);
+            //     ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
+            //     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+            //     // Your logic here for the number case
+            // }
+            // else
+            // {
+            //     ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 0));
+            //     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+            // }
         }
     }
     free(data);
@@ -136,6 +163,7 @@ static void uart_config()
 
 void app_main(void)
 {
+    relays_gpio_init();
     ledc_init();
     uart_config();
     xTaskCreate(uart_read_task, "uart_read_task", BUF_SIZE * 2, NULL, configMAX_PRIORITIES, NULL);
